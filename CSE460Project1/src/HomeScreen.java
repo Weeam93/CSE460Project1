@@ -15,24 +15,6 @@ import javax.swing.JTextField;
 
 public class HomeScreen extends JPanel{
 
-	private JPanel guestPanel;
-	private JPanel qualityPanel;
-	private JPanel billTotalPanel;
-	private JPanel billDeductionsPanel;
-	private JPanel taxPanel;
-	private JPanel tipRatePanel;
-	private JPanel personTipPanel;
-	private JPanel totalTipPanel;
-	private JPanel totalPanel;
-	private JLabel guestLabel;
-	private JLabel qualityLabel;
-	private JLabel billTotalLabel;
-	private JLabel billDeductionsLabel;
-	private JLabel taxLabel;
-	private JLabel tipRateLabel;
-	private JLabel totalTipLabel;
-	private JLabel personTipLabel;
-	private JLabel totalLabel;
 	private JTextField billTotalTextField;
 	private JTextField billDeductionsTextField;
 	private JTextField taxTextField;
@@ -47,6 +29,7 @@ public class HomeScreen extends JPanel{
 	private JPanel headerPanel;
 	private JButton tipTailoringBtn;
 	private JButton configureTipItemsBtn;
+	private JButton calculateBtn;
 	private int guestCount;
 	private double basebillTotal;
 	private double deductions;
@@ -57,10 +40,11 @@ public class HomeScreen extends JPanel{
 	private double totalBillCost;
 	private DecimalFormat df;
 
+
 	
 	public HomeScreen()
 	{
-		this.setSize(350, 400);
+		this.setSize(350, 450);
 		this.setVisible(true);
 		setUpHeader();
 		setUpBody();
@@ -90,36 +74,45 @@ public class HomeScreen extends JPanel{
 	}
 	private void setUpFooter()
 	{
-		footerPanel=new JPanel(new GridLayout(1,2));
+	
+		footerPanel=new JPanel(new GridLayout(2,1));
+		JPanel calcPanel=new JPanel();
+		JPanel navigatePanel=new JPanel(new GridLayout(1,2));
+		calculateBtn=new JButton("Calculate");
 		tipTailoringBtn=new JButton("Tip Tailoring");
 		configureTipItemsBtn=new JButton("Configuring Tip Items");
-		footerPanel.add(tipTailoringBtn);
-		footerPanel.add(configureTipItemsBtn);
+		
+		calcPanel.add(calculateBtn);
+		navigatePanel.add(tipTailoringBtn);
+		navigatePanel.add(configureTipItemsBtn);
+		
+		footerPanel.add(calcPanel);
+		footerPanel.add(navigatePanel);
 	}
 	private void setUpBody()
 	{
 		bodyPanel=new JPanel();
 		bodyPanel.setLayout(new GridLayout(9,1));
 		
-		guestPanel=new JPanel(new GridLayout(1,2));
-		qualityPanel=new JPanel(new GridLayout(1,2));
-		billTotalPanel=new JPanel(new GridLayout(1,2));
-		billDeductionsPanel=new JPanel(new GridLayout(1,2));
-		taxPanel=new JPanel(new GridLayout(1,2));
-		tipRatePanel=new JPanel(new GridLayout(1,2));
-		totalTipPanel=new JPanel(new GridLayout(1,2));
-		personTipPanel=new JPanel(new GridLayout(1,2));
-		totalPanel=new JPanel(new GridLayout(1,2));
+		JPanel guestPanel=new JPanel(new GridLayout(1,2));
+		JPanel qualityPanel=new JPanel(new GridLayout(1,2));
+		JPanel billTotalPanel=new JPanel(new GridLayout(1,2));
+		JPanel billDeductionsPanel=new JPanel(new GridLayout(1,2));
+		JPanel taxPanel=new JPanel(new GridLayout(1,2));
+		JPanel tipRatePanel=new JPanel(new GridLayout(1,2));
+		JPanel totalTipPanel=new JPanel(new GridLayout(1,2));
+		JPanel personTipPanel=new JPanel(new GridLayout(1,2));
+		JPanel totalPanel=new JPanel(new GridLayout(1,2));
 
-		guestLabel=new JLabel("Number of Guests");
-		qualityLabel=new JLabel("Quality of Service");
-		billTotalLabel=new JLabel("Bill Total");
-		billDeductionsLabel=new JLabel("Bill Deductions");
-		taxLabel=new JLabel("Tax");
-		tipRateLabel=new JLabel("Tip Rate");
-		totalTipLabel=new JLabel("Total Tip");
-		personTipLabel=new JLabel("Per Person Tip");
-		totalLabel=new JLabel("Total (Bill & Tip)");
+		JLabel guestLabel=new JLabel("Number of Guests");
+		JLabel qualityLabel=new JLabel("Quality of Service");
+		JLabel billTotalLabel=new JLabel("Bill Total");
+		JLabel billDeductionsLabel=new JLabel("Bill Deductions");
+		JLabel taxLabel=new JLabel("Tax");
+		JLabel tipRateLabel=new JLabel("Tip Rate");
+		JLabel totalTipLabel=new JLabel("Total Tip");
+		JLabel personTipLabel=new JLabel("Per Person Tip");
+		JLabel totalLabel=new JLabel("Total (Bill & Tip)");
 
 		guestTextField=new JTextField(10);;
 		billTotalTextField=new JTextField(10);
@@ -268,7 +261,10 @@ public class HomeScreen extends JPanel{
 	{
 		return this.taxTextField;
 	}
-	
+	public JButton getCalcBtn()
+	{
+		return calculateBtn;
+	}
 	public JButton getConfigBtn()
 	{
 		return configureTipItemsBtn;

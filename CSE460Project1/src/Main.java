@@ -28,7 +28,6 @@ public class Main {
 	private static void textBoxHandlers()
 	{
 		homePanel.getTaxTextField().getDocument().addDocumentListener(new DocumentListener(){
-//
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub

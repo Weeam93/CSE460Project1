@@ -24,7 +24,7 @@ public class TipCalculatorFrame extends JFrame{
 	private TipTailoringScreen ttS;
 	public TipCalculatorFrame()
 	{
-		this.setSize(450, 400);
+		this.setSize(450, 450);
 		setHomeScreen();
 		setConfigScreen();
 		setTipTailorScreen();
@@ -77,7 +77,7 @@ public class TipCalculatorFrame extends JFrame{
 	public void switchToHomeScreen()
 	{
 		CardLayout cards= (CardLayout) contentPane.getLayout();
-		this.setSize(450, 400);
+		this.setSize(450, 450);
 		cards.show(contentPane,HOME_SCREEN);
 	}
 	

@@ -38,6 +38,7 @@ public class Main {
 				homePanel.deductionInputIsValid();
 				homePanel.billInputIsValid();
 				calcTipRate();
+				homePanel.calculate();
 				homePanel.updateLabels();
 				
 
@@ -96,15 +97,13 @@ public class Main {
 		else if(rating >=5)
 		{
 			homePanel.setTipRate(configPanel.getMaxTip());
-			System.out.println(configPanel.getMaxTip());
-			System.out.println(homePanel.getTipRate());
 		}
 		else
 		{
 			double rate=((double)rating/5)*configPanel.getMaxTip();
 			homePanel.setTipRate(rate);
 		}
-		//System.out.println(homePanel.getTipRate());
+		
 	}
 
 }

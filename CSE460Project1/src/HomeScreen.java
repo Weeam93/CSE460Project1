@@ -333,12 +333,11 @@ public class HomeScreen extends JPanel{
 		totalTipOutput.setText(df.format(totalTip));
 		personTipOutput.setText(df.format(personalTip));
 	}
-	public void calculate(double tipR)
+	public void calculate()
 	{
 		Double bill=this.basebillTotal-this.deductions;
-		Double billWithTax=bill+(bill*tax);
-		this.tipRate=tipR;
-		this.totalTip=billWithTax*this.tipRate;
+		Double billWithTax=bill+tax;
+		this.totalTip=billWithTax*(this.tipRate/100);
 		this.personalTip=this.totalTip / this.guestCount;
 		this.totalBillCost=billWithTax+this.totalTip;
 		

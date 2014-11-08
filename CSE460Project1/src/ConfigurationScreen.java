@@ -1,11 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -17,29 +19,56 @@ public class ConfigurationScreen extends JPanel {
 	private JPanel headerPanel;
 	private JPanel bodyPanel;
 	private JButton homeScreenBtn;
+	private double minPercent;
+	private double maxPercent;
+	private boolean isTaxChecked;
+	private boolean isDeductionsChecked;
+	private DecimalFormat df;
+	private JCheckBox includeDeductionsCheckBox;
+	private JCheckBox includeTaxCheckBox;
+	private JTextField minTextField;
+	private JTextField maxTextField;
+	private JPanel footerPanel;
+	private JButton saveBtn;
+	private double minDefault;
+	private double maxDefault;
 	public ConfigurationScreen()
 	{
 		this.setSize(350, 400);
 		this.setVisible(true);
-		//this.setResizable(false);
+		
+		this.isDeductionsChecked=false;
+		this.isTaxChecked=false;
+		df=new DecimalFormat("0.00");
+	
 		
 		headerPanel=new JPanel();
 		bodyPanel=new JPanel();
+		footerPanel=new JPanel();
 		setUpHeader();
 		setUpBody();
+		setUpFooter();
+		this.setMaxTip(0.00);
+		this.setMinTip(0.00);
+		this.setMinDefault();
+		this.setMaxDefault();
 		this.add(headerPanel,BorderLayout.NORTH);
 		this.add(bodyPanel,BorderLayout.CENTER);
+		this.add(footerPanel,BorderLayout.SOUTH);
 		
 	}
 	private void setUpHeader()
 	{
 		homeScreenBtn=new JButton("Home");
 		headerPanel.setLayout(new GridLayout(1,3));
-		headerPanel.add(homeScreenBtn);
-		/*headerPanel.add(new JLabel(" "));
-		headerPanel.add(new JLabel(" "));*/
-		
-		
+		headerPanel.add(homeScreenBtn);		
+	}
+	private void setUpFooter()
+	{
+		JPanel savePanel=new JPanel();
+		saveBtn=new JButton("Save");
+		savePanel.add(saveBtn);
+		footerPanel.add(savePanel);
 	}
 	private void setUpBody()
 	{
@@ -51,8 +80,8 @@ public class ConfigurationScreen extends JPanel {
 	
 		JLabel minTipLabel=new JLabel("Minimum Tip Percentage");
 		JLabel maxTipLabel=new JLabel("Maximum Tip Percentage");
-		JTextField minTextField=new JTextField(10);
-		JTextField maxTextField=new JTextField(10);
+		minTextField=new JTextField(10);
+		maxTextField=new JTextField(10);
 		
 		JPanel panel2=new JPanel(new GridLayout(1,2));
 		JPanel leftPanel2=new JPanel();
@@ -78,14 +107,14 @@ public class ConfigurationScreen extends JPanel {
 		
 		JLabel includeTaxLabel=new JLabel("Include Tax");
 		JLabel includeDeductionsLabel=new JLabel("Include Deductions");
-		JCheckBox includeTaxToggle=new JCheckBox();
-		JCheckBox includeDeductionsToggle=new JCheckBox();
+		includeTaxCheckBox=new JCheckBox();
+	    includeDeductionsCheckBox=new JCheckBox();
 		
 		JPanel panel5=new JPanel(new GridLayout(1,2));
 		JPanel leftPanel5=new JPanel();
 		leftPanel5.add(includeTaxLabel);
 		JPanel rightPanel5=new JPanel();
-		rightPanel5.add(includeTaxToggle);
+		rightPanel5.add(includeTaxCheckBox);
 		panel5.add(leftPanel5);
 		panel5.add(rightPanel5);
 		
@@ -93,7 +122,7 @@ public class ConfigurationScreen extends JPanel {
 		JPanel leftPanel6=new JPanel();
 		leftPanel6.add(includeDeductionsLabel);
 		JPanel rightPanel6=new JPanel();
-		rightPanel6.add(includeDeductionsToggle);
+		rightPanel6.add(includeDeductionsCheckBox);
 		panel6.add(leftPanel6);
 		panel6.add(rightPanel6);
 		
@@ -106,9 +135,86 @@ public class ConfigurationScreen extends JPanel {
 		bodyPanel.add(panel5);
 		bodyPanel.add(panel6);
 	}
+	private void setMinDefault()
+	{
+		this.minDefault=0.00;
+		this.minTextField.setText(df.format(minDefault));
+	}
+	private void setMaxDefault()
+	{
+		this.maxDefault=40.00;
+		this.maxTextField.setText(df.format(maxDefault));
+	}
+	public void setMinTip(Double minT)
+	{
+		this.minPercent=minT;
+		//this.minTextField.setText(df.format(minPercent));
+	}
+	public void setMaxTip(Double maxT)
+	{
+		this.maxPercent=maxT;
+		//this.maxTextField.setText(df.format(maxPercent));
+	}
 	public JButton getHomeScreenBtn()
 	{
 		return homeScreenBtn;
+	}
+	public JButton getSaveBtn()
+	{
+		return saveBtn;
+	}
+	public double getMinTip()
+	{
+		if(Double.parseDouble(this.minTextField.getText())==minDefault)
+			return this.minDefault;
+		else
+			return minPercent;
+	}
+	public double getMaxTip()
+	{
+		if(Double.parseDouble(this.maxTextField.getText())==maxDefault)
+			return this.maxDefault;
+		else
+			return maxPercent;
+	}
+	public boolean minTipPercentIsValid()
+	{
+		if(minPercent < 0)
+		{
+			JOptionPane.showMessageDialog(this, "Error: Minimum Tip must be Greater than 0","Error",JOptionPane.WARNING_MESSAGE);
+			this.setMinDefault();
+			return false;
+		}
+		else if(minPercent > maxPercent )
+	    {
+			JOptionPane.showMessageDialog(this, "Warning: Minimum Tip must be Less than Max Tip","Error",JOptionPane.WARNING_MESSAGE);
+			this.setMaxDefault();
+			this.setMinDefault();
+			return false;
+		}
+		return true;
+	}
+	public boolean maxTipPercentIsValid()
+	{
+		if(maxPercent < 0)
+		{
+			JOptionPane.showMessageDialog(this, "Warning: Maximum Tip must be Greater than 0","Error",JOptionPane.WARNING_MESSAGE);
+			this.setMaxDefault();
+			return false;
+		}
+		else if(maxPercent < minPercent )
+	    {
+			JOptionPane.showMessageDialog(this, "Error: Maximum Tip must be Greater than Max Tip","Error",JOptionPane.WARNING_MESSAGE);
+			this.setMaxDefault();
+			this.setMinDefault();
+			return false;
+		}
+		return true;
+	}
+	public void updateVariables()
+	{
+		minPercent=Double.parseDouble(minTextField.getText());
+		maxPercent=Double.parseDouble(maxTextField.getText());
 	}
 
 }

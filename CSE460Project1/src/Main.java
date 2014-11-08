@@ -22,43 +22,41 @@ public class Main {
 		homePanel=myFrame.getHome();
 		configPanel=myFrame.getConfigScreen();
 		tipTailorPanel=myFrame.getTipTailorScreen();
-		ButtonHandlers();
+		navigationButtonHandlers();
 		textBoxHandlers();
 	}
 	private static void textBoxHandlers()
 	{
-		homePanel.getTaxTextField().getDocument().addDocumentListener(new DocumentListener(){
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				warn();
-			}
+		homePanel.getCalcBtn().addActionListener(new ActionListener(){
 
 			@Override
-			public void removeUpdate(DocumentEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				//warn();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
+				homePanel.updateVariables();
+				homePanel.guestInputIsValid();
+				homePanel.taxInputIsValid();
+				homePanel.deductionInputIsValid();
+				homePanel.billInputIsValid();
+				calcTipRate();
+				homePanel.updateLabels();
 				
-				warn();
-			}
-			public void warn()
-			{
-				//System.out.println("yo");
-				if(Double.parseDouble(homePanel.getGuestTextField().getText())<0)
-				{
-					JOptionPane.showMessageDialog(myFrame, "Error: Number of Guest must be greater than 0","Error",JOptionPane.ERROR_MESSAGE);
-					//homePanel.getGuestTextField().setText("1");
-				}
-			}
+
+			}});
 		
-		});
-		}
-	private static void ButtonHandlers()
+		configPanel.getSaveBtn().addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				configPanel.updateVariables();
+				configPanel.minTipPercentIsValid();
+				configPanel.maxTipPercentIsValid();
+			}});
+
+
+	}
+	
+	private static void navigationButtonHandlers()
 	{
 		homePanel.getConfigBtn().addActionListener(new ActionListener(){
 
@@ -89,5 +87,24 @@ public class Main {
 				myFrame.switchToHomeScreen();
 			}});
 	}
-	
+	private static void calcTipRate()
+	{
+		System.out.println("Calculating Tip Rate");
+		int rating=homePanel.getQuality();
+		if(rating < 1)
+			homePanel.setTipRate(configPanel.getMinTip());
+		else if(rating >=5)
+		{
+			homePanel.setTipRate(configPanel.getMaxTip());
+			System.out.println(configPanel.getMaxTip());
+			System.out.println(homePanel.getTipRate());
+		}
+		else
+		{
+			double rate=((double)rating/5)*configPanel.getMaxTip();
+			homePanel.setTipRate(rate);
+		}
+		//System.out.println(homePanel.getTipRate());
+	}
+
 }

@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -40,8 +41,6 @@ public class HomeScreen extends JPanel{
 	private double totalBillCost;
 	private DecimalFormat df;
 
-
-	
 	public HomeScreen()
 	{
 		this.setSize(350, 450);
@@ -130,9 +129,9 @@ public class HomeScreen extends JPanel{
 		guestPanel.add(rightGuestPanel);
 		
 		qualityPanel.add(qualityLabel);
-		qualitySlider=new JSlider(JSlider.HORIZONTAL,0,10,5);
-		qualitySlider.setMajorTickSpacing(5);
-		qualitySlider.setMinorTickSpacing(1);
+		qualitySlider=new JSlider(JSlider.HORIZONTAL,0,5,1);
+		qualitySlider.setMajorTickSpacing(1);
+		//qualitySlider.setMinorTickSpacing();
 		qualitySlider.setPaintLabels(true);
 		qualityPanel.add(qualitySlider);
 
@@ -273,5 +272,77 @@ public class HomeScreen extends JPanel{
 	{
 		return tipTailoringBtn;
 	}
+	public boolean guestInputIsValid()
+	{
+		if(guestCount <=0 || guestCount > 99)
+		{
+			JOptionPane.showMessageDialog(this, "Error: Number of Guests must be between 1 & 100","Error",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	public boolean billInputIsValid()
+	{
+		if(this.basebillTotal < 0)
+		{
+			JOptionPane.showMessageDialog(this, "Error: Bill must be greater than 0","Error",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	public boolean taxInputIsValid()
+	{
+		
+		if(tax < 0)
+		{
+			JOptionPane.showMessageDialog(this, "Error: Number of Guest must be greater than 0","Error",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(tax > basebillTotal)
+		{
+			JOptionPane.showMessageDialog(this, "Warning:Tax amount exceeds Total Bill","Warning",JOptionPane.WARNING_MESSAGE);
+		}
+		return true;
+	}
+	public boolean deductionInputIsValid()
+	{
+		if(deductions > basebillTotal)
+		{
+			JOptionPane.showMessageDialog(this, "Error:Deductions can't exceed Total Bill","Error",JOptionPane.ERROR_MESSAGE);
+			this.setBillDeductions(0);
+			return false;
+		}
+		else if( deductions <0)
+		{
+			JOptionPane.showMessageDialog(this, "Error:Deductions can't be negative","Error",JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	public void updateVariables()
+	{
+		guestCount=Integer.parseInt(this.guestTextField.getText());
+		tax=Double.parseDouble(this.taxTextField.getText());
+		basebillTotal=Double.parseDouble(this.billTotalTextField.getText());
+		deductions=Double.parseDouble(this.getBillDeductionsTextField().getText());
+	}
+	public void updateLabels()
+	{
+		tipRateOutput.setText(df.format(tipRate)+"%");
+		totalBillOutput.setText(df.format(totalBillCost));
+		totalTipOutput.setText(df.format(totalTip));
+		personTipOutput.setText(df.format(personalTip));
+	}
+	public void calculate(double tipR)
+	{
+		Double bill=this.basebillTotal-this.deductions;
+		Double billWithTax=bill+(bill*tax);
+		this.tipRate=tipR;
+		this.totalTip=billWithTax*this.tipRate;
+		this.personalTip=this.totalTip / this.guestCount;
+		this.totalBillCost=billWithTax+this.totalTip;
+		
+	}
+	
 
 }

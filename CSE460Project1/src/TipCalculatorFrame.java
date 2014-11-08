@@ -65,7 +65,7 @@ public class TipCalculatorFrame extends JFrame{
 	public void switchToTipTailorScreen()
 	{
 		CardLayout cards= (CardLayout) contentPane.getLayout();
-		this.setSize(400, 400);
+		this.setSize(420, 400);
 		cards.show(contentPane,TAILOR_SCREEN);
 	}
 	public void switchToConfigScreen()

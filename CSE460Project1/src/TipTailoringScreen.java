@@ -9,7 +9,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -27,14 +30,20 @@ public class TipTailoringScreen extends JPanel{
 	private Vector<JTextField> textFieldList;
 	private Vector<JSlider> sliderList;
 	private Vector<JLabel> labelList;
+	private JScrollPane scrollPane;
 
 	public TipTailoringScreen()
 	{
 		curGuestCount=1;
-		this.setSize(400, 400);
+		//this.setSize(375, 400);
+		//this.setPreferredSize(new Dimension(400,400));
 		this.setVisible(true);
 		
 		df=new DecimalFormat("0.00");
+		
+		//scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	
+		
 		headerPanel=new JPanel();
 		bodyPanel=new JPanel();
 		
@@ -44,11 +53,16 @@ public class TipTailoringScreen extends JPanel{
 		sliderList=new Vector<JSlider>();
 		labelList=new Vector<JLabel>();
 		
+		
 		setUpHeader();
 		setUpBody(curGuestCount,0.00);
+		JTextArea ta=new JTextArea();
+		ta.setSize(300,300);
+		scrollPane=new JScrollPane(bodyPanel);
 		
+		this.setLayout(new BorderLayout());
 		this.add(headerPanel,BorderLayout.NORTH);
-		this.add(bodyPanel,BorderLayout.CENTER);
+		this.add(scrollPane,BorderLayout.CENTER);
 		
 	textFieldList.firstElement().setText("ME");
 	}
@@ -57,6 +71,8 @@ public class TipTailoringScreen extends JPanel{
 		homeScreenBtn=new JButton("Home");
 		headerPanel.setLayout(new GridLayout(1,3));
 		headerPanel.add(homeScreenBtn);
+		headerPanel.add(new JLabel());
+		headerPanel.add(new JLabel());
 	}
 	private void setUpBody(int guestCount,double personalTip)
 	{

@@ -31,7 +31,6 @@ public class ConfigurationScreen extends JPanel {
 	private JButton saveBtn;
 	private double minDefault;
 	private double maxDefault;
-	private JScrollPane scrollPane;
 	public ConfigurationScreen()
 	{
 		this.setSize(350, 400);
@@ -40,8 +39,6 @@ public class ConfigurationScreen extends JPanel {
 		df=new DecimalFormat("0.00");
 	
 		headerPanel=new JPanel();
-		scrollPane=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
 		bodyPanel=new JPanel();
 		footerPanel=new JPanel();
 		setUpHeader();

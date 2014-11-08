@@ -35,10 +35,8 @@ public class ConfigurationScreen extends JPanel {
 		this.setSize(350, 400);
 		this.setVisible(true);
 		
-
 		df=new DecimalFormat("0.00");
 	
-		
 		headerPanel=new JPanel();
 		bodyPanel=new JPanel();
 		footerPanel=new JPanel();

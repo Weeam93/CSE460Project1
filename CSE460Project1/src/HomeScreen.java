@@ -280,6 +280,10 @@ public class HomeScreen extends JPanel{
 	{
 		return this.personTipOutput;
 	}
+	public double getTotalTip()
+	{
+		return this.totalTip;
+	}
 	public boolean guestInputIsValid()
 	{
 		if(guestCount <=0 || guestCount > 99)

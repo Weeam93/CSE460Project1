@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 public class TipTailoringScreen extends JPanel{
@@ -65,8 +67,9 @@ public class TipTailoringScreen extends JPanel{
 			panelList.lastElement().setLayout(new BoxLayout(panelList.lastElement(),BoxLayout.X_AXIS));
 			textFieldList.add(new JTextField(10));
 			textFieldList.lastElement().setMaximumSize(new Dimension(Integer.MAX_VALUE,textFieldList.lastElement().getMinimumSize().height));
-			sliderList.add(new JSlider(JSlider.HORIZONTAL,0,10,5));
-			sliderList.lastElement().setMajorTickSpacing(2);
+			sliderList.add(new JSlider(JSlider.HORIZONTAL,0,100,5));
+			sliderList.lastElement().setMajorTickSpacing(20);
+			sliderList.lastElement().setMinorTickSpacing(10);
 			//qualitySlider.setMinorTickSpacing();
 			sliderList.lastElement().setPaintLabels(true);
 			JLabel dollarLabel=new JLabel("$");
@@ -76,8 +79,31 @@ public class TipTailoringScreen extends JPanel{
 			panelList.lastElement().add(dollarLabel);
 			panelList.lastElement().add(labelList.lastElement());
 			bodyPanel.add(panelList.lastElement());
+			
+			/*sliderList.lastElement().addChangeListener(new ChangeListener(){
+			JLabel curLabel=labelList.lastElement();
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					// TODO Auto-generated method stub
+					JSlider source=(JSlider)e.getSource();
+					if(!source.getValueIsAdjusting())
+					{
+						double curPrice=Double.parseDouble(curLabel.getText());
+						double newPrice=source.getValue()*
+						curLabel.setText(df.format(source.getValue()));
+					}
+					
+				}});*/
 		}
 		curGuestCount=guestCount;
+	}
+	public Vector<JSlider> getSliders()
+	{
+		return sliderList;
+	}
+	public Vector<JLabel> getLabels()
+	{
+		return labelList;
 	}
 	private void updateBody(double personalTip)
 	{
@@ -98,11 +124,8 @@ public class TipTailoringScreen extends JPanel{
 				textFieldList.remove(textFieldList.size()-1);
 				sliderList.remove(sliderList.size()-1);
 				labelList.remove(labelList.size()-1);
-				curGuestCount--;
-				
-			}
-			
-			
+				curGuestCount--;		
+			}	
 		}
 	}
 	private void refreshLabels(double personalTip)

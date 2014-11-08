@@ -1,8 +1,14 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.Vector;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -12,6 +18,7 @@ public class Main {
 	private static HomeScreen homePanel;
 	private static ConfigurationScreen configPanel;
 	private static TipTailoringScreen tipTailorPanel;
+	private static DecimalFormat df;
 
 	public static void main(String[] args)
 	{
@@ -22,8 +29,10 @@ public class Main {
 		homePanel=myFrame.getHome();
 		configPanel=myFrame.getConfigScreen();
 		tipTailorPanel=myFrame.getTipTailorScreen();
+		df=new DecimalFormat("0.00");
 		navigationButtonHandlers();
 		eventHandlers();
+	
 	}
 	private static void eventHandlers()
 	{
@@ -43,7 +52,7 @@ public class Main {
 				
 				tipTailorPanel.setGuestCount(homePanel.getGuestCount());
 				tipTailorPanel.updatePanel(homePanel.getPersonalTip());
-				
+				sliderHandler();
 
 			}});
 		
@@ -56,10 +65,32 @@ public class Main {
 				configPanel.minTipPercentIsValid();
 				configPanel.maxTipPercentIsValid();
 			}});
-
+		
+		
 
 	}
-	
+	private static void sliderHandler()
+	{
+		Vector<JSlider> tipSliders=tipTailorPanel.getSliders();
+		final Vector<JLabel> tipLabels=tipTailorPanel.getLabels();
+		for(int i=0;i<tipSliders.size();i++)
+		{
+			final int k=i;
+			final double basePrice=homePanel.getPersonalTip();
+			tipSliders.elementAt(i).addChangeListener(new ChangeListener(){
+			
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					// TODO Auto-generated method stub
+					JSlider source=(JSlider)e.getSource();
+					if(!source.getValueIsAdjusting())
+					{
+						double newPrice=((double)source.getValue()/100)*homePanel.getTotalTip();
+						tipLabels.elementAt(k).setText(df.format(newPrice));
+					}
+				}});
+		}
+	}
 	private static void navigationButtonHandlers()
 	{
 		homePanel.getConfigBtn().addActionListener(new ActionListener(){

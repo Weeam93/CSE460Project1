@@ -35,14 +35,9 @@ public class TipTailoringScreen extends JPanel{
 	public TipTailoringScreen()
 	{
 		curGuestCount=1;
-		//this.setSize(375, 400);
-		//this.setPreferredSize(new Dimension(400,400));
 		this.setVisible(true);
 		
 		df=new DecimalFormat("0.00");
-		
-		//scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	
 		
 		headerPanel=new JPanel();
 		bodyPanel=new JPanel();
@@ -95,21 +90,6 @@ public class TipTailoringScreen extends JPanel{
 			panelList.lastElement().add(dollarLabel);
 			panelList.lastElement().add(labelList.lastElement());
 			bodyPanel.add(panelList.lastElement());
-			
-			/*sliderList.lastElement().addChangeListener(new ChangeListener(){
-			JLabel curLabel=labelList.lastElement();
-				@Override
-				public void stateChanged(ChangeEvent e) {
-					// TODO Auto-generated method stub
-					JSlider source=(JSlider)e.getSource();
-					if(!source.getValueIsAdjusting())
-					{
-						double curPrice=Double.parseDouble(curLabel.getText());
-						double newPrice=source.getValue()*
-						curLabel.setText(df.format(source.getValue()));
-					}
-					
-				}});*/
 		}
 		curGuestCount=guestCount;
 	}

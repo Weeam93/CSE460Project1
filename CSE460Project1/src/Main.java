@@ -25,105 +25,100 @@ public class Main {
 	
 	public static void main(String[] args)
 	{
-		myFrame = new TipCalculatorFrame();
-		//myFrame.pack();
+		myFrame = new TipCalculatorFrame(); ///creats frame
 		myFrame.setResizable(false);
 		myFrame.setVisible(true);
-		homePanel=myFrame.getHome();
-		configPanel=myFrame.getConfigScreen();
-		tipTailorPanel=myFrame.getTipTailorScreen();
+		
+		homePanel=myFrame.getHome(); //gets homeScreen
+		configPanel=myFrame.getConfigScreen(); //gets the Configuration Screen
+		tipTailorPanel=myFrame.getTipTailorScreen(); //gets the TipTailoringScreen
+		
 		df=new DecimalFormat("0.00");
-		changed=false;
-		navigationButtonHandlers();
-		eventHandlers();
+		changed=false; //weather or not slider was changed
+		navigationButtonHandlers(); //calls the navigation  handlers
+		eventHandlers(); // calls even hanersl
 	
 	}
 	private static void eventHandlers()
 	{
-		homePanel.getCalcBtn().addActionListener(new ActionListener(){
+		homePanel.getCalcBtn().addActionListener(new ActionListener(){ //when calc button is called
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				homePanel.updateVariables();
-				homePanel.guestInputIsValid();
-				homePanel.taxInputIsValid();
-				homePanel.deductionInputIsValid();
-				homePanel.billInputIsValid();
-				calcTipRate();
-				homePanel.calculate(configPanel.isCheckedDeductions(),configPanel.isCheckedTax());
-				homePanel.updateLabels();
+				homePanel.guestInputIsValid();//check for valid input
+				homePanel.taxInputIsValid();//check for valid input
+				homePanel.deductionInputIsValid();//check for valid input
+				homePanel.billInputIsValid();//check for valid input
+				calcTipRate(); //calcs the tip Rate
+				homePanel.calculate(configPanel.isCheckedDeductions(),configPanel.isCheckedTax()); //cacluates the total 
+				homePanel.updateLabels(); //updates thte labels
 				
-				homePanel.getTipTailorBtn().setEnabled(true);
-				tipTailorPanel.setGuestCount(homePanel.getGuestCount());
-				tipTailorPanel.updatePanel(homePanel.getPersonalTip());
-				sliderHandler();
+				homePanel.getTipTailorBtn().setEnabled(true); //can travrese to other page after clicking calculate
+				tipTailorPanel.setGuestCount(homePanel.getGuestCount()); //sends the number of guests to the tip page
+				tipTailorPanel.updatePanel(homePanel.getPersonalTip()); //sends the personaltip as the starting personal tip
+				sliderHandler(); //checks if the sliders in the tip page are changed
 
 			}});
 		
-		configPanel.getSaveBtn().addActionListener(new ActionListener(){
+		configPanel.getSaveBtn().addActionListener(new ActionListener(){ //when save button is called
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				configPanel.updateVariables();
-				configPanel.minTipPercentIsValid();
-				configPanel.maxTipPercentIsValid();
+				configPanel.updateVariables(); //updates the min and max percent
+				configPanel.minTipPercentIsValid(); //check for valid input
+				configPanel.maxTipPercentIsValid(); //check for valid input
 			}});
-		
-		
-
 	}
 	private static void sliderHandler()
 	{
 		tipSliders=tipTailorPanel.getSliders();
 		tipLabels=tipTailorPanel.getLabels();
-		for(int i=0;i<tipSliders.size();i++)
+		for(int i=0;i<tipSliders.size();i++) //gets all the sliders
 		{
-			final int k=i;
-			final double basePrice=homePanel.getPersonalTip();
+			final int k=i; //current slider
+			final double basePrice=homePanel.getPersonalTip(); //gets that person personal tip
 			tipSliders.elementAt(i).addChangeListener(new ChangeListener(){
-			
-				
-
 				@Override
 				public void stateChanged(ChangeEvent e) {
 					// TODO Auto-generated method stub
 					JSlider source=(JSlider)e.getSource();
 					if(!source.getValueIsAdjusting())
 					{
-						if(k==0)
+						if(k==0) //if first slider changed
 							changed=true;
-						double newPrice=((double)source.getValue()/100)*homePanel.getTotalTip();
-						tipLabels.elementAt(k).setText(df.format(newPrice));
+						double newPrice=((double)source.getValue()/100)*homePanel.getTotalTip(); //changes the slider price
+						tipLabels.elementAt(k).setText(df.format(newPrice)); //changes the label for the price
 					}
 				}});
 		}
 	}
 	private static void navigationButtonHandlers()
 	{
-		homePanel.getConfigBtn().addActionListener(new ActionListener(){
+		homePanel.getConfigBtn().addActionListener(new ActionListener(){//switches screen
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				myFrame.switchToConfigScreen();
+				myFrame.switchToConfigScreen(); 
 			}});
-		homePanel.getTipTailorBtn().addActionListener(new ActionListener(){
+		homePanel.getTipTailorBtn().addActionListener(new ActionListener(){//switches screen
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				myFrame.switchToTipTailorScreen();
 			}});
-		configPanel.getHomeScreenBtn().addActionListener(new ActionListener(){
+		configPanel.getHomeScreenBtn().addActionListener(new ActionListener(){//switches screen
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				myFrame.switchToHomeScreen();
 			}});
-		tipTailorPanel.getHomeScreenBtn().addActionListener(new ActionListener(){
+		tipTailorPanel.getHomeScreenBtn().addActionListener(new ActionListener(){//switches screen
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -131,14 +126,15 @@ public class Main {
 				double sum=0;
 				for(int i=0;i<tipLabels.size();i++)
 				{
-					sum=sum+Double.parseDouble(tipLabels.elementAt(i).getText());
+					sum=sum+Double.parseDouble(tipLabels.elementAt(i).getText()); //updates the TipTotal
 				}
 				
-			
+			//updates the TipRate
 				homePanel.getTipRateLabel().setText(df.format(homePanel.calcNewTipRate(sum,configPanel.isCheckedDeductions(),configPanel.isCheckedTax()))+" %");
 				homePanel.setTotalTip(sum);
 				if(changed==true)
 				{
+					//Sets the peronsal tip to tailored
 				homePanel.getPeronsalTiplabel().setText(df.format(Double.parseDouble(tipLabels.firstElement().getText())));
 				homePanel.getPersonalTipLabelLeft().setText("Tailored Per Person Tip");
 				}
@@ -149,6 +145,7 @@ public class Main {
 				myFrame.switchToHomeScreen();
 			}});
 	}
+	//calculates the TipRate baseed of min and max tip percentages and rateing
 	private static void calcTipRate()
 	{
 		System.out.println("Calculating Tip Rate");

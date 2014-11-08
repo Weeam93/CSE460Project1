@@ -33,6 +33,7 @@ public class ConfigurationScreen extends JPanel {
 	private double maxDefault;
 	public ConfigurationScreen()
 	{
+		//inialize Panel
 		this.setSize(350, 400);
 		this.setVisible(true);
 		
@@ -41,13 +42,16 @@ public class ConfigurationScreen extends JPanel {
 		headerPanel=new JPanel();
 		bodyPanel=new JPanel();
 		footerPanel=new JPanel();
+		//setUp Main Panels
 		setUpHeader();
 		setUpBody();
 		setUpFooter();
+		//set default Tip Values
 		this.setMaxTip(0.00);
 		this.setMinTip(0.00);
 		this.setMinDefault();
 		this.setMaxDefault();
+		//ADd mani panels
 		this.add(headerPanel,BorderLayout.NORTH);
 		this.add(bodyPanel,BorderLayout.CENTER);
 		this.add(footerPanel,BorderLayout.SOUTH);
@@ -55,12 +59,14 @@ public class ConfigurationScreen extends JPanel {
 	}
 	private void setUpHeader()
 	{
+		//home navigation
 		homeScreenBtn=new JButton("Home");
 		headerPanel.setLayout(new GridLayout(1,3));
 		headerPanel.add(homeScreenBtn);		
 	}
 	private void setUpFooter()
 	{
+		//save button
 		JPanel savePanel=new JPanel();
 		saveBtn=new JButton("Save");
 		savePanel.add(saveBtn);
@@ -68,6 +74,7 @@ public class ConfigurationScreen extends JPanel {
 	}
 	private void setUpBody()
 	{
+		//sets up body
 		JPanel panel1=new JPanel();
 		JTextArea infoArea1=new JTextArea();
 		infoArea1.setText("The tip range is the percentage\nrange for selecting tips. Defaults\nvalues are provided but you can\nadjust the range if you wish");
@@ -122,7 +129,7 @@ public class ConfigurationScreen extends JPanel {
 		panel6.add(leftPanel6);
 		panel6.add(rightPanel6);
 		
-		//bodyPanel.setLayout(new GridLayout(6,1));
+		//add Panels to the main Panel
 		bodyPanel.setLayout(new BoxLayout(bodyPanel,BoxLayout.Y_AXIS));
 		bodyPanel.add(panel1);
 		bodyPanel.add(panel2);
@@ -131,6 +138,7 @@ public class ConfigurationScreen extends JPanel {
 		bodyPanel.add(panel5);
 		bodyPanel.add(panel6);
 	}
+	//Accessor and Mutator methods for the min and max percents
 	private void setMinDefault()
 	{
 		this.minDefault=0.00;
@@ -151,6 +159,7 @@ public class ConfigurationScreen extends JPanel {
 		this.maxPercent=maxT;
 		//this.maxTextField.setText(df.format(maxPercent));
 	}
+	//get the GUI components
 	public JButton getHomeScreenBtn()
 	{
 		return homeScreenBtn;
@@ -159,6 +168,7 @@ public class ConfigurationScreen extends JPanel {
 	{
 		return saveBtn;
 	}
+	//returns whether or not the checkboxes are selected
 	public boolean isCheckedDeductions()
 	{
 		return this.includeDeductionsCheckBox.isSelected();
@@ -167,6 +177,7 @@ public class ConfigurationScreen extends JPanel {
 	{
 		return this.includeTaxCheckBox.isSelected();
 	}
+	//gets the minTip Value
 	public double getMinTip()
 	{
 		if(Double.parseDouble(this.minTextField.getText())==minDefault)
@@ -174,6 +185,7 @@ public class ConfigurationScreen extends JPanel {
 		else
 			return minPercent;
 	}
+	//gets the MaxTipValue
 	public double getMaxTip()
 	{
 		if(Double.parseDouble(this.maxTextField.getText())==maxDefault)
@@ -181,6 +193,7 @@ public class ConfigurationScreen extends JPanel {
 		else
 			return maxPercent;
 	}
+	//The Follwonig check for valid inputs fro the tip percentages
 	public boolean minTipPercentIsValid()
 	{
 		if(minPercent < 0)
@@ -215,6 +228,7 @@ public class ConfigurationScreen extends JPanel {
 		}
 		return true;
 	}
+	///updates the min and max percents from the textfields
 	public void updateVariables()
 	{
 		minPercent=Double.parseDouble(minTextField.getText());

@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 public class HomeScreen extends JPanel{
 
+	//Private Fields
 	private JTextField billTotalTextField;
 	private JTextField billDeductionsTextField;
 	private JTextField taxTextField;
@@ -44,18 +45,23 @@ public class HomeScreen extends JPanel{
 
 	public HomeScreen()
 	{
+		//creates screen
 		this.setSize(350, 450);
 		this.setVisible(true);
 		setUpHeader();
 		setUpBody();
 		setUpFooter();
-		//this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+		
+		//2 decmial places
 		df=new DecimalFormat("0.00");
 		
 		
+		//addes a header body and footer
 		this.add(headerPanel,BorderLayout.NORTH);
 		this.add(bodyPanel,BorderLayout.CENTER);
 		this.add(footerPanel,BorderLayout.SOUTH);
+		
+		//initial values for boxes
 		this.setGuestCount(1);
 		this.setBillTotal(0.00);
 		this.setBillDeductions(0.00);
@@ -64,10 +70,11 @@ public class HomeScreen extends JPanel{
 		this.setTotalTip(0.00);
 		this.setpersonalTip(0.00);
 		this.setTotalBillCost(0.00);
-		tipTailoringBtn.setEnabled(false);
+		tipTailoringBtn.setEnabled(false); //cant access next page until the page info is calculated
 	}
 	private void setUpHeader()
 	{
+		//addes banner
 		headerPanel=new JPanel();
 		JLabel headerLabel=new JLabel("Tip Splitting Calculator");
 		headerPanel.add(headerLabel);
@@ -75,7 +82,7 @@ public class HomeScreen extends JPanel{
 	}
 	private void setUpFooter()
 	{
-	
+	 //addes panel with navigation buttons
 		footerPanel=new JPanel(new GridLayout(2,1));
 		JPanel calcPanel=new JPanel();
 		JPanel navigatePanel=new JPanel(new GridLayout(1,2));
@@ -90,11 +97,13 @@ public class HomeScreen extends JPanel{
 		footerPanel.add(calcPanel);
 		footerPanel.add(navigatePanel);
 	}
+	//creates the GUI for the body and initlizes the values of the labels
 	private void setUpBody()
 	{
 		bodyPanel=new JPanel();
 		bodyPanel.setLayout(new GridLayout(9,1));
 		
+		//creates Panels
 		JPanel guestPanel=new JPanel(new GridLayout(1,2));
 		JPanel qualityPanel=new JPanel(new GridLayout(1,2));
 		JPanel billTotalPanel=new JPanel(new GridLayout(1,2));
@@ -105,6 +114,7 @@ public class HomeScreen extends JPanel{
 		JPanel personTipPanel=new JPanel(new GridLayout(1,2));
 		JPanel totalPanel=new JPanel(new GridLayout(1,2));
 
+		//creates lables
 		JLabel guestLabel=new JLabel("Number of Guests");
 		JLabel qualityLabel=new JLabel("Quality of Service");
 		JLabel billTotalLabel=new JLabel("Bill Total");
@@ -115,6 +125,7 @@ public class HomeScreen extends JPanel{
 		personTipLabelLeft=new JLabel("Per Person Tip");
 		JLabel totalLabel=new JLabel("Total (Bill & Tip)");
 
+		//Dynamic components
 		guestTextField=new JTextField(10);;
 		billTotalTextField=new JTextField(10);
 		billDeductionsTextField=new JTextField(10);
@@ -124,6 +135,7 @@ public class HomeScreen extends JPanel{
 		personTipOutput=new JLabel("0.00");
 		totalBillOutput=new JLabel("0.00");
 
+		//adds components to Panels
 		guestPanel.add(guestLabel);
 		JPanel rightGuestPanel=new JPanel();
 		rightGuestPanel.add(new JLabel(""));
@@ -180,6 +192,7 @@ public class HomeScreen extends JPanel{
 		rightTotalPanel.add(totalBillOutput);
 		totalPanel.add(rightTotalPanel);
 		
+		//adds all the panels to the bodyPanel
 		bodyPanel.add(guestPanel);
 		bodyPanel.add(qualityPanel);
 		bodyPanel.add(billTotalPanel);
@@ -190,6 +203,7 @@ public class HomeScreen extends JPanel{
 		bodyPanel.add(personTipPanel);
 		bodyPanel.add(totalPanel);
 	}
+	//sette and getter methods for the components and values
 	public void setGuestCount(int numberOfGuest)
 	{
 		this.guestCount=numberOfGuest;
@@ -294,6 +308,8 @@ public class HomeScreen extends JPanel{
 	{
 		return this.tipRateOutput;
 	}
+	
+	//The followign methods check for errors in input and warn the user
 	public boolean guestInputIsValid()
 	{
 		if(guestCount <=0 || guestCount > 99)
@@ -342,6 +358,8 @@ public class HomeScreen extends JPanel{
 		}
 		return true;
 	}
+	
+	//Updates the variables with the values entered in the boxes
 	public void updateVariables()
 	{
 		guestCount=Integer.parseInt(this.guestTextField.getText());
@@ -349,6 +367,7 @@ public class HomeScreen extends JPanel{
 		basebillTotal=Double.parseDouble(this.billTotalTextField.getText());
 		deductions=Double.parseDouble(this.getBillDeductionsTextField().getText());
 	}
+	//updates the labels after calculation has been completed
 	public void updateLabels()
 	{
 		tipRateOutput.setText(df.format(tipRate)+"%");
@@ -356,14 +375,15 @@ public class HomeScreen extends JPanel{
 		totalTipOutput.setText(df.format(totalTip));
 		personTipOutput.setText(df.format(personalTip));
 	}
+	//calculates the totals
 	public void calculate(boolean deductionChecked, boolean taxChecked)
 	{
 		Double bill=this.basebillTotal;
-		if(deductionChecked==true)
+		if(deductionChecked==true) //if deductions should be tip
 		{
 			bill=bill-this.deductions;
 		}
-		if(taxChecked==true)
+		if(taxChecked==true) //if tax should be tip
 		{
 			bill=bill+tax;
 		}
@@ -374,7 +394,7 @@ public class HomeScreen extends JPanel{
 		this.totalBillCost=billWithTax+this.totalTip;
 		
 	}
-	public double calcNewTipRate(double sum,boolean deductionChecked, boolean taxChecked)
+	public double calcNewTipRate(double sum,boolean deductionChecked, boolean taxChecked) //calcs new tiprate after sliders have been modified
 	{
 		Double bill=this.basebillTotal;
 		if(deductionChecked==true)

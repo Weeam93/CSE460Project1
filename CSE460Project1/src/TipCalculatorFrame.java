@@ -22,7 +22,8 @@ public class TipCalculatorFrame extends JFrame{
 	private HomeScreen hs;
 	private ConfigurationScreen cs;
 	private TipTailoringScreen ttS;
-	public TipCalculatorFrame()
+	
+	public TipCalculatorFrame() //creates the Frame and addes all the screens to the cardlayouts
 	{
 		this.setSize(450, 450);
 		setHomeScreen();
@@ -37,6 +38,7 @@ public class TipCalculatorFrame extends JFrame{
 		this.add(contentPane);
 
 	}
+	//setter and getters for the screens to be accessed from the main
 	private void setHomeScreen()
 	{
 		this.hs=new HomeScreen();
@@ -62,6 +64,7 @@ public class TipCalculatorFrame extends JFrame{
 		return this.ttS;
 	}
 	
+	//swicth the screens requires switchign cards
 	public void switchToTipTailorScreen()
 	{
 		CardLayout cards= (CardLayout) contentPane.getLayout();

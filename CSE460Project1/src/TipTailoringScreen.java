@@ -50,7 +50,7 @@ public class TipTailoringScreen extends JPanel{
 		this.add(headerPanel,BorderLayout.NORTH);
 		this.add(bodyPanel,BorderLayout.CENTER);
 		
-	
+	textFieldList.firstElement().setText("ME");
 	}
 	private void setUpHeader()
 	{

@@ -40,6 +40,7 @@ public class HomeScreen extends JPanel{
 	private double personalTip;
 	private double totalBillCost;
 	private DecimalFormat df;
+	private JLabel personTipLabelLeft;
 
 	public HomeScreen()
 	{
@@ -63,6 +64,7 @@ public class HomeScreen extends JPanel{
 		this.setTotalTip(0.00);
 		this.setpersonalTip(0.00);
 		this.setTotalBillCost(0.00);
+		tipTailoringBtn.setEnabled(false);
 	}
 	private void setUpHeader()
 	{
@@ -110,14 +112,14 @@ public class HomeScreen extends JPanel{
 		JLabel taxLabel=new JLabel("Tax");
 		JLabel tipRateLabel=new JLabel("Tip Rate");
 		JLabel totalTipLabel=new JLabel("Total Tip");
-		JLabel personTipLabel=new JLabel("Per Person Tip");
+		personTipLabelLeft=new JLabel("Per Person Tip");
 		JLabel totalLabel=new JLabel("Total (Bill & Tip)");
 
 		guestTextField=new JTextField(10);;
 		billTotalTextField=new JTextField(10);
 		billDeductionsTextField=new JTextField(10);
 		taxTextField=new JTextField(10);
-		tipRateOutput=new JLabel("0.0%");
+		tipRateOutput=new JLabel("0.00 %");
 		totalTipOutput=new JLabel("0.00");
 		personTipOutput=new JLabel("0.00");
 		totalBillOutput=new JLabel("0.00");
@@ -166,7 +168,7 @@ public class HomeScreen extends JPanel{
 		rightTotalTipPanel.add(totalTipOutput);
 		totalTipPanel.add(rightTotalTipPanel);
 
-		personTipPanel.add(personTipLabel);
+		personTipPanel.add(personTipLabelLeft);
 		JPanel rightPersonTipPanel=new JPanel();
 		rightPersonTipPanel.add(new JLabel("$"));
 		rightPersonTipPanel.add(personTipOutput);
@@ -276,6 +278,10 @@ public class HomeScreen extends JPanel{
 	{
 		return this.personalTip;
 	}
+	public JLabel getPersonalTipLabelLeft()
+	{
+		return this.personTipLabelLeft;
+	}
 	public JLabel getPeronsalTiplabel()
 	{
 		return this.personTipOutput;
@@ -283,6 +289,10 @@ public class HomeScreen extends JPanel{
 	public double getTotalTip()
 	{
 		return this.totalTip;
+	}
+	public JLabel getTipRateLabel()
+	{
+		return this.tipRateOutput;
 	}
 	public boolean guestInputIsValid()
 	{
@@ -316,6 +326,7 @@ public class HomeScreen extends JPanel{
 		}
 		return true;
 	}
+	
 	public boolean deductionInputIsValid()
 	{
 		if(deductions > basebillTotal)
@@ -361,6 +372,20 @@ public class HomeScreen extends JPanel{
 		this.totalTip=bill*(this.tipRate/100);
 		this.personalTip=this.totalTip / this.guestCount;
 		this.totalBillCost=billWithTax+this.totalTip;
+		
+	}
+	public double calcNewTipRate(double sum,boolean deductionChecked, boolean taxChecked)
+	{
+		Double bill=this.basebillTotal;
+		if(deductionChecked==true)
+		{
+			bill=bill-this.deductions;
+		}
+		if(taxChecked==true)
+		{
+			bill=bill+tax;
+		}
+		return (sum/bill)*100;
 		
 	}
 	

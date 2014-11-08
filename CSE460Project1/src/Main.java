@@ -23,9 +23,9 @@ public class Main {
 		configPanel=myFrame.getConfigScreen();
 		tipTailorPanel=myFrame.getTipTailorScreen();
 		navigationButtonHandlers();
-		textBoxHandlers();
+		eventHandlers();
 	}
-	private static void textBoxHandlers()
+	private static void eventHandlers()
 	{
 		homePanel.getCalcBtn().addActionListener(new ActionListener(){
 
@@ -38,8 +38,11 @@ public class Main {
 				homePanel.deductionInputIsValid();
 				homePanel.billInputIsValid();
 				calcTipRate();
-				homePanel.calculate();
+				homePanel.calculate(configPanel.isCheckedDeductions(),configPanel.isCheckedTax());
 				homePanel.updateLabels();
+				
+				tipTailorPanel.setGuestCount(homePanel.getGuestCount());
+				tipTailorPanel.updatePanel(homePanel.getPersonalTip());
 				
 
 			}});

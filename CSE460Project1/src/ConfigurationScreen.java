@@ -21,8 +21,6 @@ public class ConfigurationScreen extends JPanel {
 	private JButton homeScreenBtn;
 	private double minPercent;
 	private double maxPercent;
-	private boolean isTaxChecked;
-	private boolean isDeductionsChecked;
 	private DecimalFormat df;
 	private JCheckBox includeDeductionsCheckBox;
 	private JCheckBox includeTaxCheckBox;
@@ -37,8 +35,7 @@ public class ConfigurationScreen extends JPanel {
 		this.setSize(350, 400);
 		this.setVisible(true);
 		
-		this.isDeductionsChecked=false;
-		this.isTaxChecked=false;
+
 		df=new DecimalFormat("0.00");
 	
 		
@@ -162,6 +159,14 @@ public class ConfigurationScreen extends JPanel {
 	public JButton getSaveBtn()
 	{
 		return saveBtn;
+	}
+	public boolean isCheckedDeductions()
+	{
+		return this.includeDeductionsCheckBox.isSelected();
+	}
+	public boolean isCheckedTax()
+	{
+		return this.includeTaxCheckBox.isSelected();
 	}
 	public double getMinTip()
 	{
